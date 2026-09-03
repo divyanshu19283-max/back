@@ -1,38 +1,77 @@
 """
 Database configuration.
 
-By default this project runs against a local SQLite file so the whole
-pipeline (ingestion -> EDA -> training -> decision engine -> API) can be
-demoed and tested with zero external services.
+Uses PostgreSQL/Supabase in production when DATABASE_URL is provided.
+Falls back to SQLite for local development/demo.
 
-For the real Supabase/PostgreSQL deployment, set the environment variable:
-
-    DATABASE_URL=postgresql+psycopg2://<user>:<password>@<host>:5432/<db>?sslmode=require
-
-(Supabase gives you this connection string in Project Settings -> Database.)
-The SQL in app/sql/schema.sql is written for PostgreSQL/Supabase and should
-be run once via the Supabase SQL editor (or psql) to create the tables,
-indexes and row-level-security policies. SQLAlchemy's ORM models in
-app/models/ mirror that schema and are used for both SQLite (dev) and
-Postgres (prod) — SQLAlchemy abstracts the dialect differences.
+SQLite is configured with a busy timeout and WAL mode so concurrent
+FastAPI requests are much less likely to fail with:
+    sqlite3.OperationalError: database is locked
 """
+
 import os
-from sqlalchemy import create_engine
+
+from sqlalchemy import create_engine, event
 from sqlalchemy.orm import sessionmaker, declarative_base
 
+
 DEFAULT_SQLITE_PATH = os.path.join(
-    os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data", "freight.db"
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+    "data",
+    "freight.db",
 )
 
-DATABASE_URL = os.environ.get("DATABASE_URL", f"sqlite:///{DEFAULT_SQLITE_PATH}")
+DATABASE_URL = os.environ.get(
+    "DATABASE_URL",
+    f"sqlite:///{DEFAULT_SQLITE_PATH}",
+)
 
 IS_SQLITE = DATABASE_URL.startswith("sqlite")
 
-connect_args = {"check_same_thread": False} if IS_SQLITE else {}
 
-engine = create_engine(DATABASE_URL, connect_args=connect_args, future=True)
+if IS_SQLITE:
+    connect_args = {
+        "check_same_thread": False,
+        "timeout": 30,
+    }
 
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine, future=True)
+    engine = create_engine(
+        DATABASE_URL,
+        connect_args=connect_args,
+        future=True,
+        pool_pre_ping=True,
+    )
+
+    @event.listens_for(engine, "connect")
+    def configure_sqlite(dbapi_connection, connection_record):
+        cursor = dbapi_connection.cursor()
+
+        # Enable WAL so reads can happen while another request writes.
+        cursor.execute("PRAGMA journal_mode=WAL")
+
+        # Wait instead of immediately failing when another transaction
+        # temporarily owns the write lock.
+        cursor.execute("PRAGMA busy_timeout=30000")
+
+        # Reasonable durability/performance balance for this application.
+        cursor.execute("PRAGMA synchronous=NORMAL")
+
+        cursor.close()
+
+else:
+    engine = create_engine(
+        DATABASE_URL,
+        future=True,
+        pool_pre_ping=True,
+    )
+
+
+SessionLocal = sessionmaker(
+    autocommit=False,
+    autoflush=False,
+    bind=engine,
+    future=True,
+)
 
 Base = declarative_base()
 
@@ -40,6 +79,7 @@ Base = declarative_base()
 def get_db():
     """FastAPI dependency that yields a DB session and always closes it."""
     db = SessionLocal()
+
     try:
         yield db
     finally:
@@ -47,6 +87,7 @@ def get_db():
 
 
 def init_db():
-    """Create all tables if they don't exist (used for SQLite dev/demo)."""
-    from app.models import freight  # noqa: F401  (ensures models are registered)
+    """Create all tables if they don't exist."""
+    from app.models import freight  # noqa: F401
+
     Base.metadata.create_all(bind=engine)
