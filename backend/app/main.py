@@ -1,3 +1,4 @@
+
 import json
 import os
 from contextlib import asynccontextmanager
@@ -139,38 +140,30 @@ def seed_model_run_history(db):
                     "training_start": date_type.fromisoformat(
                         meta["training_start"]
                     ),
-
                     "training_end": date_type.fromisoformat(
                         meta["training_end"]
                     ),
-
                     "mae": float(
                         metrics.get("mae", 0)
                     ),
-
                     "rmse": float(
                         metrics.get("rmse", 0)
                     ),
-
                     "mape": float(
                         metrics.get("mape", 0)
                     ),
-
                     "r2": (
                         float(metrics["r2"])
                         if metrics.get("r2") is not None
                         else None
                     ),
-
                     "training_rows": int(
                         meta.get(
                             "training_rows",
                             0,
                         )
                     ),
-
                     "horizon_days": int(horizon),
-
                     "is_best_model": (
                         model_name
                         == meta.get("best_model")
@@ -185,16 +178,13 @@ def seed_model_run_history(db):
                 continue
 
             if existing is None:
-
                 db.add(
                     ModelRun(
                         model_name=model_name,
                         **values,
                     )
                 )
-
             else:
-
                 for key, value in values.items():
                     setattr(
                         existing,
@@ -212,7 +202,6 @@ def seed_model_run_history(db):
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-
     init_db()
 
     db = SessionLocal()
@@ -221,7 +210,6 @@ async def lifespan(app: FastAPI):
         seed_reference_data(db)
         seed_freight_history_if_empty(db)
         seed_model_run_history(db)
-
     finally:
         db.close()
 
@@ -230,16 +218,13 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     title="Intelligent Freight Forecasting & Chartering Decision Support",
-
     description=(
         "SIH 2026 Problem Statement 26006 — backend API. "
         "Zero external APIs: all forecasting/optimization "
         "runs locally against historical + synthetic data "
         "using scikit-learn/XGBoost/LightGBM models."
     ),
-
     version="1.0.0",
-
     lifespan=lifespan,
 )
 
@@ -252,10 +237,10 @@ app.add_middleware(
     CORSMiddleware,
 
     allow_origins=[
-        # CURRENT PRODUCTION FRONTEND
+        # CURRENT DEPLOYED FRONTEND
         "https://back-nu-seven.vercel.app",
 
-        # OTHER PRODUCTION FRONTENDS
+        # OTHER FRONTEND DEPLOYMENTS
         "https://freight-puce.vercel.app",
         "https://freight-sih.vercel.app",
         "https://freight-no7hyyp8j-divyanshu19283-maxs-projects.vercel.app",
@@ -269,15 +254,8 @@ app.add_middleware(
         "http://127.0.0.1:3000",
     ],
 
-    # Allow Vercel preview deployments for this project
-    allow_origin_regex=(
-        r"^https://back-[a-z0-9-]+\.vercel\.app$"
-    ),
-
     allow_credentials=True,
-
     allow_methods=["*"],
-
     allow_headers=["*"],
 )
 
@@ -299,7 +277,6 @@ app.include_router(chat.router)
 
 @app.get("/")
 def root():
-
     return {
         "service": "freight-forecasting-backend",
         "status": "ok",
@@ -325,7 +302,6 @@ def health():
         try:
             db.execute(text("SELECT 1"))
             db_status = "connected"
-
         finally:
             db.close()
 
@@ -348,3 +324,4 @@ def health():
         "model_loaded": model_loaded,
         "version": "1.0.0",
     }
+
