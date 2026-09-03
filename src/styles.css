@@ -1,0 +1,612 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * FREIGHT INTELLIGENCE — design system
+ * Institutional maritime-intelligence terminal: true charcoal/black
+ * surfaces, a single restrained gold/bronze signal, muted status colors.
+ * Flat, hairline-bordered, no gradients, no glow, no glassmorphism.
+ * All values in oklch.
+ */
+
+@theme {
+  /* Surfaces (ink) — warm near-black graphite scale (Palantir/Bloomberg
+     terminal register, not cool blue-tinted "tech" grey). */
+  --color-ink-950: oklch(0.13 0.004 60);
+  --color-ink-900: oklch(0.165 0.005 60);
+  --color-ink-850: oklch(0.195 0.006 58);
+  --color-ink-800: oklch(0.225 0.007 58);
+  --color-ink-750: oklch(0.255 0.007 58);
+  --color-ink-700: oklch(0.3 0.008 58);
+  --color-ink-600: oklch(0.375 0.008 58);
+  --color-ink-500: oklch(0.46 0.008 58);
+  --color-ink-400: oklch(0.585 0.008 58);
+  --color-ink-300: oklch(0.71 0.007 58);
+  --color-ink-200: oklch(0.83 0.006 58);
+  --color-ink-100: oklch(0.91 0.005 58);
+
+  /* Signal (accent) — one restrained antique gold/bronze, used sparingly */
+  --color-accent: oklch(0.74 0.12 82);
+  --color-accent-50: oklch(0.96 0.02 85);
+  --color-accent-100: oklch(0.92 0.035 85);
+  --color-accent-200: oklch(0.86 0.06 84);
+  --color-accent-300: oklch(0.8 0.09 83);
+  --color-accent-400: oklch(0.77 0.11 82);
+  --color-accent-500: oklch(0.74 0.12 82);
+  --color-accent-600: oklch(0.64 0.115 72);
+  --color-accent-700: oklch(0.54 0.1 62);
+  --color-accent-800: oklch(0.44 0.085 55);
+  --color-accent-900: oklch(0.35 0.065 50);
+
+  --color-success: oklch(0.64 0.1 155);
+  --color-success-400: oklch(0.68 0.1 155);
+  --color-success-500: oklch(0.6 0.1 155);
+  --color-success-600: oklch(0.52 0.095 155);
+
+  --color-warn: oklch(0.72 0.1 75);
+  --color-warn-400: oklch(0.75 0.1 75);
+  --color-warn-500: oklch(0.68 0.11 72);
+  --color-warn-600: oklch(0.6 0.11 68);
+
+  --color-danger: oklch(0.6 0.13 25);
+  --color-danger-400: oklch(0.64 0.13 25);
+  --color-danger-500: oklch(0.57 0.14 25);
+  --color-danger-600: oklch(0.5 0.14 25);
+
+  /* Muted cool counterpoint — reserved for a single chart series or a
+     "neutral/inactive" data state; never used for chrome, borders, links
+     or CTAs so the palette never reads as blue. */
+  --color-steel: oklch(0.62 0.025 250);
+
+  --text-2xs: 0.6875rem;
+  --text-2xs--line-height: 1rem;
+
+  --tracking-widest: 0.05em;
+  --tracking-ultra: 0.08em;
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif-display: "Fraunces", "Iowan Old Style", ui-serif, Georgia, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  --shadow-panel: 0 1px 2px oklch(0 0 0 / 0.5);
+  --shadow-elevated: 0 10px 28px oklch(0 0 0 / 0.45);
+  --shadow-gold: 0 0 0 1px oklch(0.74 0.12 82 / 0.18);
+
+  --animate-fade-in: fade-in 0.25s ease-out;
+  --animate-slide-up: slide-up 0.32s cubic-bezier(0.19, 1, 0.22, 1);
+  --animate-slide-in-left: slide-in-left 0.25s ease-out;
+  --animate-shimmer: shimmer 1.8s linear infinite;
+  --animate-scan: scan 2.4s ease-in-out infinite;
+  --animate-pulse-dot: pulse-dot 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes slide-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes scan {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scaleX(0.92);
+  }
+  50% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+/* shadcn compatibility tokens, mapped onto the charcoal + gold palette */
+:root {
+  --radius: 0.25rem;
+  --background: oklch(0.13 0.004 60);
+  --foreground: oklch(0.94 0.003 60);
+  --card: oklch(0.165 0.005 60);
+  --card-foreground: oklch(0.94 0.003 60);
+  --popover: oklch(0.175 0.005 60);
+  --popover-foreground: oklch(0.94 0.003 60);
+  --primary: oklch(0.74 0.12 82);
+  --primary-foreground: oklch(0.16 0.01 60);
+  --secondary: oklch(0.225 0.007 58);
+  --secondary-foreground: oklch(0.94 0.003 60);
+  --muted: oklch(0.205 0.006 58);
+  --muted-foreground: oklch(0.585 0.008 58);
+  --accent-surface: oklch(0.225 0.007 58);
+  --accent-foreground: oklch(0.94 0.003 60);
+  --destructive: oklch(0.57 0.14 25);
+  --destructive-foreground: oklch(0.97 0.004 60);
+  --border: oklch(1 0 0 / 0.08);
+  --input: oklch(1 0 0 / 0.12);
+  --ring: oklch(0.74 0.12 82 / 0.45);
+  --chart-1: oklch(0.74 0.12 82);
+  --chart-2: oklch(0.64 0.1 155);
+  --chart-3: oklch(0.68 0.11 72);
+  --chart-4: oklch(0.6 0.13 25);
+  --chart-5: oklch(0.62 0.025 250);
+  --sidebar: oklch(0.115 0.004 60);
+  --sidebar-foreground: oklch(0.94 0.003 60);
+  --sidebar-primary: oklch(0.74 0.12 82);
+  --sidebar-primary-foreground: oklch(0.16 0.01 60);
+  --sidebar-accent: oklch(0.205 0.006 58);
+  --sidebar-accent-foreground: oklch(0.94 0.003 60);
+  --sidebar-border: oklch(1 0 0 / 0.07);
+  --sidebar-ring: oklch(0.74 0.12 82 / 0.45);
+}
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 2px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 2px);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 6px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: var(--color-ink-950);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    line-height: 1.5;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: oklch(0.74 0.12 82 / 0.28);
+    color: white;
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-ink-700);
+    border-radius: 9999px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-accent-800);
+  }
+}
+
+/* Flat, hairline-bordered surface. This is the single card primitive used
+   across every screen — no blur, no glow, no gradient wash. */
+@utility glass {
+  background-color: var(--color-ink-900);
+  border: 1px solid oklch(1 0 0 / 0.07);
+}
+
+@utility glass-soft {
+  background-color: var(--color-ink-900);
+  border: 1px solid oklch(1 0 0 / 0.06);
+}
+
+@utility panel {
+  background-color: var(--color-ink-900);
+  border: 1px solid oklch(1 0 0 / 0.07);
+  border-radius: var(--radius-lg);
+  transition:
+    border-color 0.18s ease,
+    background-color 0.18s ease;
+}
+
+@utility panel-soft {
+  background-color: var(--color-ink-900);
+  border: 1px solid oklch(1 0 0 / 0.05);
+  border-radius: var(--radius-md);
+}
+
+/* Unbordered grouping — used where content needs separation from its
+   neighbors but doesn't need its own card chrome. */
+@utility panel-quiet {
+  background-color: transparent;
+  border: none;
+}
+
+/* The one surface per screen that should read as the primary takeaway —
+   same flat institutional language as .panel, just lifted a step and
+   marked with a single gold rule rather than a border on every edge. */
+@utility panel-hero {
+  background-color: var(--color-ink-850);
+  border: 1px solid oklch(1 0 0 / 0.07);
+  border-left: 2px solid var(--color-accent-500);
+  border-radius: var(--radius-lg);
+}
+
+/* Interactive panel — a panel that responds to hover/press, used for
+   clickable cards (route rows, scenario cards, nav items). One consistent
+   micro-interaction vocabulary across the whole app. */
+@utility panel-interactive {
+  background-color: var(--color-ink-900);
+  border: 1px solid oklch(1 0 0 / 0.07);
+  border-radius: var(--radius-lg);
+  transition:
+    border-color 0.18s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.18s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+  &:hover {
+    border-color: oklch(0.74 0.12 82 / 0.35);
+    background-color: var(--color-ink-850);
+    transform: translateY(-1px);
+  }
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+@utility hairline {
+  border-color: oklch(1 0 0 / 0.07);
+}
+
+/* Quiet section label — sentence case, not tracked-out caps. */
+@utility kicker {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 500;
+  color: var(--color-ink-400);
+}
+
+@utility label-mono {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  line-height: 1rem;
+  letter-spacing: 0.02em;
+  color: var(--color-ink-400);
+}
+
+@utility num {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+  font-family: var(--font-mono);
+}
+
+/* The one typographic flourish in the system — reserved for the numbers
+   and headline figures that should carry weight on a screen (KPI values,
+   the hero recommendation, section-defining stats). Everything else stays
+   on Inter so this remains a deliberate accent, not a second body font. */
+@utility display {
+  font-family: var(--font-serif-display);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.015em;
+}
+
+@utility btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: var(--radius-md);
+  padding: 0.5rem 0.875rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease,
+    transform 0.15s cubic-bezier(0.22, 1, 0.36, 1);
+  user-select: none;
+  white-space: nowrap;
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+@utility btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: var(--radius-md);
+  padding: 0.5rem 0.875rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease,
+    transform 0.15s cubic-bezier(0.22, 1, 0.36, 1);
+  user-select: none;
+  white-space: nowrap;
+  background: var(--color-accent-500);
+  color: oklch(0.16 0.01 60);
+  &:hover {
+    background: var(--color-accent-400);
+  }
+  &:active {
+    background: var(--color-accent-600);
+    transform: scale(0.98);
+  }
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    transform: none;
+  }
+}
+
+@utility btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: var(--radius-md);
+  padding: 0.5rem 0.875rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+  user-select: none;
+  white-space: nowrap;
+  background-color: transparent;
+  color: var(--color-ink-300);
+  border: 1px solid oklch(1 0 0 / 0.09);
+  &:hover {
+    background-color: oklch(1 0 0 / 0.05);
+    color: white;
+  }
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+}
+
+@utility btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: var(--radius-md);
+  padding: 0.5rem 0.875rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+  user-select: none;
+  white-space: nowrap;
+  border: 1px solid oklch(1 0 0 / 0.12);
+  color: var(--color-ink-300);
+  &:hover {
+    background-color: oklch(1 0 0 / 0.04);
+    border-color: oklch(0.74 0.12 82 / 0.4);
+    color: white;
+  }
+}
+
+@utility input {
+  width: 100%;
+  background-color: var(--color-ink-900);
+  border: 1px solid oklch(1 0 0 / 0.09);
+  border-radius: var(--radius-md);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.8125rem;
+  color: oklch(0.94 0.003 60);
+  transition: border-color 0.15s ease;
+  &::placeholder {
+    color: var(--color-ink-400);
+  }
+  &:focus {
+    outline: none;
+    border-color: oklch(0.74 0.12 82 / 0.55);
+  }
+}
+
+@utility select {
+  width: 100%;
+  background-color: var(--color-ink-900);
+  border: 1px solid oklch(1 0 0 / 0.09);
+  border-radius: var(--radius-md);
+  padding: 0.5rem 2.25rem 0.5rem 0.75rem;
+  font-size: 0.8125rem;
+  color: oklch(0.94 0.003 60);
+  transition: border-color 0.15s ease;
+  appearance: none;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23c9a860' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  &:focus {
+    outline: none;
+    border-color: oklch(0.74 0.12 82 / 0.55);
+  }
+  & option {
+    background-color: var(--color-ink-900);
+    color: oklch(0.94 0.003 60);
+  }
+}
+
+/* Small status/data tag — no uppercase, no heavy tracking. */
+@utility chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3125rem;
+  border-radius: var(--radius-sm);
+  border-width: 1px;
+  padding: 0.15rem 0.5rem;
+  font-size: var(--text-2xs);
+  line-height: 1rem;
+  font-weight: 500;
+}
+
+@utility skeleton {
+  border-radius: var(--radius-md);
+  background: linear-gradient(
+    90deg,
+    var(--color-ink-800),
+    var(--color-ink-750),
+    var(--color-ink-800)
+  );
+  background-size: 1000px 100%;
+  animation: var(--animate-shimmer);
+}
+
+@utility divider {
+  height: 1px;
+  width: 100%;
+  background-color: oklch(1 0 0 / 0.07);
+}
+
+@utility divider-accent {
+  height: 1px;
+  width: 100%;
+  background: linear-gradient(90deg, var(--color-accent-700), transparent 75%);
+}
+
+@utility text-balance {
+  text-wrap: balance;
+}
+
+@utility no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@utility bg-grid {
+  background-image:
+    linear-gradient(oklch(1 0 0 / 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, oklch(1 0 0 / 0.025) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* The single ambient light source for the whole app — one very soft bronze
+   glow anchored top-left of the shell, fixed so it never scrolls with
+   content. This is the one place we spend "boldness" on an otherwise flat,
+   hairline-bordered surface language; nowhere else gets a gradient wash. */
+@utility bg-ambient {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(1100px 620px at 14% -8%, oklch(0.74 0.12 82 / 0.055), transparent 60%),
+    radial-gradient(900px 500px at 100% 0%, oklch(0.64 0.1 155 / 0.03), transparent 55%);
+}
+
+/* Structural top rule used on the hero recommendation panel and the primary
+   KPI card in a group — a single gold hairline, not a gradient border. */
+@utility rule-accent-top {
+  position: relative;
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, var(--color-accent-500), transparent 70%);
+  }
+}
+
+/* Live/streaming data indicator — a small breathing dot, used once per
+   panel to signal a value is real-time rather than static. */
+@utility live-dot {
+  position: relative;
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: var(--color-success-500);
+  &::after {
+    content: "";
+    position: absolute;
+    inset: -4px;
+    border-radius: 9999px;
+    border: 1px solid var(--color-success-500);
+    animation: var(--animate-pulse-dot);
+  }
+}

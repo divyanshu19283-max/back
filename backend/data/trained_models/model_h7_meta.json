@@ -1,0 +1,86 @@
+{
+  "horizon": 7,
+  "best_model": "gradient_boosting",
+  "residual_std": 2.1061411664167227,
+  "residual_mape": 1.778,
+  "training_rows": 34440,
+  "validation_rows": 6060,
+  "training_start": "2021-01-31",
+  "training_end": "2025-10-18",
+  "leaderboard": {
+    "naive_persistence": {
+      "model_name": "naive_persistence",
+      "mae": 0.6706,
+      "rmse": 0.8481,
+      "mape": 1.4473,
+      "r2": 0.9992,
+      "n_val": 6060
+    },
+    "moving_average_7": {
+      "model_name": "moving_average_7",
+      "mae": 0.6674,
+      "rmse": 0.8456,
+      "mape": 1.4174,
+      "r2": 0.9992,
+      "n_val": 6060
+    },
+    "random_forest": {
+      "model_name": "random_forest",
+      "mae": 1.2444,
+      "rmse": 2.3448,
+      "mape": 1.9269,
+      "r2": 0.994,
+      "n_val": 6060
+    },
+    "gradient_boosting": {
+      "model_name": "gradient_boosting",
+      "mae": 1.1156,
+      "rmse": 2.1579,
+      "mape": 1.778,
+      "r2": 0.9949,
+      "n_val": 6060
+    },
+    "xgboost": {
+      "model_name": "xgboost",
+      "mae": 1.2015,
+      "rmse": 2.2983,
+      "mape": 1.8726,
+      "r2": 0.9942,
+      "n_val": 6060
+    },
+    "lightgbm": {
+      "model_name": "lightgbm",
+      "mae": 1.1452,
+      "rmse": 2.2122,
+      "mape": 1.8084,
+      "r2": 0.9946,
+      "n_val": 6060
+    }
+  },
+  "feature_importances": {
+    "lag_1": 0.3873747422386539,
+    "rolling_mean_30": 0.24765601692294154,
+    "rolling_mean_7": 0.2324148033645794,
+    "rolling_mean_14": 0.12830343396525654,
+    "lag_30": 0.003362467400119338,
+    "lag_14": 0.0003979148293713908,
+    "fuel_price_trend_7": 0.000124152571403915,
+    "fuel_price": 0.0001008928965116109,
+    "lag_7": 9.478428047829211e-05,
+    "demand_trend_7": 4.094668694893897e-05,
+    "week_of_year": 2.406789948190129e-05,
+    "origin_enc": 2.31011620137757e-05,
+    "congestion_trend_7": 1.8714948195214014e-05,
+    "demand_index": 1.646698739071312e-05,
+    "port_congestion_index": 1.4257242917709772e-05,
+    "supply_index": 1.1777392376276706e-05,
+    "month": 1.0175422417377963e-05,
+    "rolling_std_7": 4.614494781515964e-06,
+    "supply_trend_7": 4.546042581161261e-06,
+    "vessel_type_enc": 8.971703715756096e-07,
+    "commodity_enc": 7.321210084751854e-07,
+    "day_of_week": 4.93960199438147e-07,
+    "quarter": 0.0,
+    "destination_enc": 0.0
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "horizon": 90,
+  "best_model": "gradient_boosting",
+  "residual_std": 2.3538041608368796,
+  "residual_mape": 2.4446,
+  "training_rows": 33020,
+  "validation_rows": 5820,
+  "training_start": "2021-01-31",
+  "training_end": "2025-08-08",
+  "leaderboard": {
+    "naive_persistence": {
+      "model_name": "naive_persistence",
+      "mae": 1.9317,
+      "rmse": 2.3583,
+      "mape": 3.2505,
+      "r2": 0.9939,
+      "n_val": 5820
+    },
+    "moving_average_7": {
+      "model_name": "moving_average_7",
+      "mae": 1.9623,
+      "rmse": 2.3912,
+      "mape": 3.2777,
+      "r2": 0.9938,
+      "n_val": 5820
+    },
+    "random_forest": {
+      "model_name": "random_forest",
+      "mae": 2.1379,
+      "rmse": 3.0476,
+      "mape": 3.7649,
+      "r2": 0.9899,
+      "n_val": 5820
+    },
+    "gradient_boosting": {
+      "model_name": "gradient_boosting",
+      "mae": 1.486,
+      "rmse": 2.3575,
+      "mape": 2.4446,
+      "r2": 0.9939,
+      "n_val": 5820
+    },
+    "xgboost": {
+      "model_name": "xgboost",
+      "mae": 1.9187,
+      "rmse": 2.9472,
+      "mape": 3.0587,
+      "r2": 0.9905,
+      "n_val": 5820
+    },
+    "lightgbm": {
+      "model_name": "lightgbm",
+      "mae": 1.8104,
+      "rmse": 2.7736,
+      "mape": 2.9362,
+      "r2": 0.9916,
+      "n_val": 5820
+    }
+  },
+  "feature_importances": {
+    "rolling_mean_7": 0.31179939947872165,
+    "lag_1": 0.24260496991982786,
+    "rolling_mean_30": 0.22880821300202792,
+    "rolling_mean_14": 0.16295387372987585,
+    "lag_14": 0.026336670158404987,
+    "lag_30": 0.02332213683728534,
+    "demand_index": 0.0011078525668869457,
+    "origin_enc": 0.0010034144898923055,
+    "week_of_year": 0.0007782326982629409,
+    "supply_index": 0.00030616535593859317,
+    "port_congestion_index": 0.0003034107518029948,
+    "fuel_price": 0.0002177833093041089,
+    "commodity_enc": 0.0002003824667894063,
+    "lag_7": 6.907323461531553e-05,
+    "vessel_type_enc": 6.849819998804278e-05,
+    "fuel_price_trend_7": 5.431194647642672e-05,
+    "demand_trend_7": 1.9374958740191215e-05,
+    "congestion_trend_7": 1.8975778637688448e-05,
+    "supply_trend_7": 1.8835560266228693e-05,
+    "month": 5.137401331831356e-06,
+    "rolling_std_7": 1.664506676090165e-06,
+    "quarter": 1.5780354858027332e-06,
+    "day_of_week": 4.561276147319972e-08,
+    "destination_enc": 0.0
+  }
+}
