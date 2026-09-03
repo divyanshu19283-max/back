@@ -1,3 +1,4 @@
+
 import json
 import os
 from contextlib import asynccontextmanager
@@ -232,51 +233,29 @@ app = FastAPI(
 # CORS
 # ============================================================
 
-ALLOWED_ORIGINS = [
-    # CURRENT VERCEL FRONTEND
-    "https://back-nu-seven.vercel.app",
-
-    # OTHER DEPLOYED FRONTENDS
-    "https://freight-puce.vercel.app",
-    "https://freight-sih.vercel.app",
-    "https://freight-no7hyyp8j-divyanshu19283-maxs-projects.vercel.app",
-
-    # LOCAL DEVELOPMENT
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
-    "http://localhost:5174",
-    "http://127.0.0.1:5174",
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-]
-
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=ALLOWED_ORIGINS,
-    allow_credentials=True,
-    allow_methods=[
-        "GET",
-        "POST",
-        "PUT",
-        "PATCH",
-        "DELETE",
-        "OPTIONS",
+    allow_origins=[
+        "https://back-nu-seven.vercel.app",
+        "https://freight-puce.vercel.app",
+        "https://freight-sih.vercel.app",
+        "https://freight-no7hyyp8j-divyanshu19283-maxs-projects.vercel.app",
+
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+        "http://localhost:5174",
+        "http://127.0.0.1:5174",
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
     ],
-    allow_headers=[
-        "Accept",
-        "Accept-Language",
-        "Content-Language",
-        "Content-Type",
-        "Authorization",
-        "Origin",
-        "X-Requested-With",
-    ],
+
+    allow_origin_regex=r"https://.*\.vercel\.app",
+
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
     expose_headers=["*"],
-    max_age=86400,
 )
-
-
 # ============================================================
 # API ROUTES
 # ============================================================
@@ -341,3 +320,4 @@ def health():
         "model_loaded": model_loaded,
         "version": "1.0.0",
     }
+
