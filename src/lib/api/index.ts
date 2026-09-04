@@ -1,20 +1,4 @@
-// Barrel for the whole API layer. Components/hooks import from '@/lib/api'
-// and never reach into individual files or call fetch() directly.
-//
-//   src/lib/api/
-//   ├── client.ts        shared fetch wrapper: base URL, JSON, timeout, errors
-//   ├── forecast.ts       POST /api/forecast, GET /api/forecast/history
-//   ├── market.ts         GET /api/data/{routes,summary,eda}
-//   ├── whatif.ts          POST /api/whatif, GET /api/scenarios/history
-//   ├── optimization.ts   POST /api/optimize
-//   ├── charter.ts         GET /api/recommendations/history
-//   ├── models.ts          GET /api/model-runs
-//   ├── ports.ts           GET /api/maritime/ports[/:id]
-//   ├── vessels.ts         GET /api/maritime/vessels[/:id]
-//   ├── feasibility.ts     POST /api/maritime/feasibility
-//   ├── congestion.ts      POST /api/maritime/congestion
-//   └── voyage.ts          POST /api/maritime/voyage
-
+// Barrel for the whole API layer. Components/hooks import from '@/lib/api'.
 import { request, BASE, ApiClientError, probeBackend } from "./client";
 import { getForecast, getForecastHistory } from "./forecast";
 import { getRoutes, getSummary, getEda } from "./market";
@@ -24,7 +8,10 @@ import { getRecommendationsHistory } from "./charter";
 import { getModelRuns } from "./models";
 import { listPorts } from "./ports";
 import { listVessels } from "./vessels";
+import { DEMO_ORIGINS } from "../demo-maritime";
 import type { HealthResponse } from "../types";
+
+const unavailable = (e: unknown) => e instanceof ApiClientError && ["offline", "unknown", "server", "no-data"].includes(e.kind);
 
 export { ApiClientError, probeBackend };
 export * from "./ports";
@@ -33,8 +20,15 @@ export * from "./feasibility";
 export * from "./congestion";
 export * from "./voyage";
 export * from "./integrated";
-export const apiOrigins = async () =>
-  request<{ origins: import("../types").BackendOrigin[] }>("/api/maritime/origins");
+
+export const apiOrigins = async () => {
+  try {
+    return (await request<{ origins: import("../types").BackendOrigin[] }>("/api/maritime/origins")).origins;
+  } catch (e) {
+    if (unavailable(e)) return DEMO_ORIGINS;
+    throw e;
+  }
+};
 
 export const api = {
   base: BASE,
@@ -49,7 +43,7 @@ export const api = {
   recommendationsHistory: getRecommendationsHistory,
   scenariosHistory: getScenariosHistory,
   modelRuns: getModelRuns,
-  origins: async () => (await apiOrigins()).origins,
+  origins: apiOrigins,
   listPorts,
   listVessels,
 };
