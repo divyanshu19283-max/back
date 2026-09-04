@@ -1,14 +1,18 @@
-// Vessel reference-data domain: GET /api/maritime/vessels[/{id}].
-// Backed by app/services/reference_data.py + app/data/vessels.py — real
-// class-representative dry-bulk vessel figures (DWT, draft, speed, opex,
-// charter rate) used by the feasibility and voyage-economics engines.
-
-import { request } from "./client";
+// Vessel reference-data domain with an automatic bundled-data fallback.
+import { request, ApiClientError } from "./client";
+import { DEMO_VESSELS } from "../demo-maritime";
 import type { BackendVessel } from "../types";
 
+const unavailable = (e: unknown) => e instanceof ApiClientError && ["offline", "unknown", "server", "no-data"].includes(e.kind);
+
 export async function listVessels(): Promise<BackendVessel[]> {
-  const b = await request<{ vessels: BackendVessel[] }>("/api/maritime/vessels");
-  return b.vessels;
+  try {
+    const b = await request<{ vessels: BackendVessel[] }>("/api/maritime/vessels");
+    return b.vessels;
+  } catch (e) {
+    if (unavailable(e)) return DEMO_VESSELS;
+    throw e;
+  }
 }
 
 export async function getVessel(vesselId: string): Promise<BackendVessel> {
