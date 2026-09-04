@@ -227,8 +227,6 @@ app = FastAPI(
     version="1.0.0",
     lifespan=lifespan,
 )
-
-
 # ============================================================
 # CORS
 # ============================================================
@@ -236,11 +234,18 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
+        # Current production frontend
         "https://back-nu-seven.vercel.app",
+
+        # Current Vercel deployment / preview
+        "https://back-n1rn5l3i3-divyanshu19283-maxs-projects.vercel.app",
+
+        # Other known deployments
         "https://freight-puce.vercel.app",
         "https://freight-sih.vercel.app",
         "https://freight-no7hyyp8j-divyanshu19283-maxs-projects.vercel.app",
 
+        # Local development
         "http://localhost:5173",
         "http://127.0.0.1:5173",
         "http://localhost:5174",
@@ -249,13 +254,18 @@ app.add_middleware(
         "http://127.0.0.1:3000",
     ],
 
+    # Allow all Vercel preview deployments
     allow_origin_regex=r"https://.*\.vercel\.app",
 
+    # No cookies/auth credentials are required by this API
     allow_credentials=False,
+
     allow_methods=["*"],
     allow_headers=["*"],
     expose_headers=["*"],
 )
+
+
 # ============================================================
 # API ROUTES
 # ============================================================
